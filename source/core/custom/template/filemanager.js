@@ -62,5 +62,10 @@ module.exports = () => ({
     _: 'L',
     'z1': '#{url}',
     'z2': '#{path}'
-  }
+  },
+  chmod: {
+    _: 'AA',
+    'z1': '#{path}',
+    'z2': '#{mode}'
+  },
 })
