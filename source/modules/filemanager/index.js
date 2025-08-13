@@ -796,7 +796,7 @@ class FileManager {
             buff.push(buffSplit);
           }
           // 开始上传
-          const uploadBuffFunc = (_buff) => {
+          const uploadBuffFunc = (_buff, length) => {
             new Promise((res, rej) => {
               let _b = _buff.shift();
               if (_b) {
@@ -816,12 +816,13 @@ class FileManager {
               this.core.request(
                 this.core.filemanager.upload_file({
                   path: path + fileName,
-                  content: b
+                  content: b,
+                  count: length-_buff.length,
                 })
               ).then((res) => {
                 let ret = res['text'];
                 if (ret === '1') {
-                  return uploadBuffFunc(_buff);
+                  return uploadBuffFunc(_buff, length);
                 }
                 task.failed(LANG['upload']['task']['failed'](ret));
                 toastr.error(LANG['upload']['error'](
@@ -858,7 +859,7 @@ class FileManager {
               });
             })
           }
-          uploadBuffFunc(buff);
+          uploadBuffFunc(buff, buff.length);
         });
       };
       upload();
